@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        input[type="text"] {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        audio {
+            display: none;
+            margin-top: 20px;
+        }
+        .audio_display{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <form action="speech" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <h1>Text to Speech</h1>
+            <input name="textInput" type="text" id="textInput" placeholder="Enter text here...">
+            <input type="submit" value="generate audio">
+            {% comment %} <button onclick="speakText()">Speak</button> {% endcomment %}
+            <audio id="audioOutput" class="{{audio_display}}" controls><source src="{{ audio_file_url }}" type="audio/mp3"></audio>
+        </div>{{text}}
+        </form>
+    
+    {% comment %} <script>
+        function speakText() {
+            const textInput = document.getElementById('textInput').value;
+            if (textInput.trim() === "") {
+                alert("Please enter some text.");
+                return;
+            }
+
+            const speech = new SpeechSynthesisUtterance(textInput);
+            speechSynthesis.speak(speech);
+
+            speech.onend = function() {
+                const audio = document.getElementById('audioOutput');
+                audio.src = URL.createObjectURL(new Blob([textInput], { type: 'audio/wav' }));
+                audio.style.display = 'block';
+            };
+        }
+    </script> {% endcomment %}
+</body>
+</html>
